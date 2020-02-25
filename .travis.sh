@@ -5,7 +5,6 @@ travis_before_install() {
 }
 
 download_extract() {
-  aria2c -x 16 $1 -o $2
   tar -xf $2
 }
 
