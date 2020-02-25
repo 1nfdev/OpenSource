@@ -1,5 +1,12 @@
+#/bin/bash
+
 travis_before_install() {
   git submodule update --init --recursive
+}
+
+download_extract() {
+  aria2c -x 16 $1 -o $2
+  tar -xf $2
 }
 
 travis_install() {
@@ -23,12 +30,6 @@ travis_install() {
     "https://cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz" \
     cmake-3.6.2-Linux-x86_64.tar.gz
 }
-
-download_extract() {
-  aria2c -x 16 $1 -o $2
-  tar -xf $2
-}
-
 travis_script() {
   if [ -d cmake-3.6.2-Linux-x86_64 ]; then
     export PATH=$(pwd)/cmake-3.6.2-Linux-x86_64/bin:$PATH
@@ -41,7 +42,6 @@ travis_script() {
   cmake $CMAKE_ARGS CMakeLists.txt
   make
 }
-
 travis_after_success() {
   if [ "$PVS_ANALYZE" = "Yes" ]; then
     pvs-studio-analyzer credentials $PVS_USERNAME $PVS_KEY -o PVS-Studio.lic
@@ -61,3 +61,7 @@ travis_after_success() {
               -a PVS-Studio-${CC}.log PVS-Studio-${CC}.html
   fi
 }
+set -e
+set -x
+
+$1;
