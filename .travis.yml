@@ -17,8 +17,8 @@ matrix:
     - os: linux
       compiler: "clang"
 
-#before_install:
-#  - travis_retry bash .travis.sh travis_before_install
+before_install:
+  - travis_retry bash .travis.sh travis_before_install
 
 install:
   - travis_retry bash .travis.sh travis_install
