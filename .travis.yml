@@ -1,11 +1,30 @@
 language: c
 script: make
-compiler:
-  - clang
-  - gcc
+
 addons:
   apt:
+    update: true
     packages:
       - libxfixes-dev
       - mesa-common-dev
       - libgl1-mesa-dev
+
+matrix:
+  include:
+    - os: linux
+      compiler: "gcc"
+      env: PVS_ANALYZE=Yes
+    - os: linux
+      compiler: "clang"
+
+before_install:
+  - travis_retry bash .travis.sh travis_before_install
+
+install:
+  - travis_retry bash .travis.sh travis_install
+
+script:
+  - bash .travis.sh travis_script
+
+after_success:
+  - bash .travis.sh travis_after_success
