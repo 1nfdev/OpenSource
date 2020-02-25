@@ -5,8 +5,9 @@ travis_before_install() {
 }
 
 download_extract() {
-  aria2c -x --enable-dht=true 16 $1 -o $2
+  aria2c -x 16 $1 -o $2
   tar -xf $2
+  pv $2 | xz -vd | tar -x
 }
 
 travis_install() {
